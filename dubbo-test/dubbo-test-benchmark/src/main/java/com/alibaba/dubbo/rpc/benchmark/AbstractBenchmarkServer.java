@@ -3,6 +3,7 @@ package com.alibaba.dubbo.rpc.benchmark;
 /**
  * nfs-rpc Apache License http://code.google.com/p/nfs-rpc (c) 2011
  */
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -16,14 +17,17 @@ import com.alibaba.dubbo.remoting.exchange.support.ExchangeHandlerAdapter;
  * 
  * @author <a href="mailto:bluedavy@gmail.com">bluedavy</a>
  */
-public abstract class AbstractBenchmarkServer {
+public abstract class AbstractBenchmarkServer
+{
 
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    public void run(String[] args) throws Exception {
-        if (args == null || args.length != 5) {
+    public void run(String[] args) throws Exception
+    {
+        if (args == null || args.length != 5)
+        {
             throw new IllegalArgumentException(
-                                               "must give three args: listenPort | maxThreads | responseSize | transporter | serialization");
+                    "must give three args: listenPort | maxThreads | responseSize | transporter | serialization");
         }
         int listenPort = Integer.parseInt(args[0]);
         int maxThreads = Integer.parseInt(args[1]);
@@ -31,8 +35,8 @@ public abstract class AbstractBenchmarkServer {
         String transporter = args[3];
         String serialization = args[4];
         System.out.println(dateFormat.format(new Date()) + " ready to start server,listenPort is: " + listenPort
-                           + ",maxThreads is:" + maxThreads + ",responseSize is:" + responseSize
-                           + " bytes,transporter is:" + transporter + ",serialization is:" + serialization);
+                + ",maxThreads is:" + maxThreads + ",responseSize is:" + responseSize + " bytes,transporter is:"
+                + transporter + ",serialization is:" + serialization);
         StringBuilder url = new StringBuilder();
         url.append("exchange://0.0.0.0:");
         url.append(listenPort);
@@ -42,9 +46,11 @@ public abstract class AbstractBenchmarkServer {
         url.append(serialization);
         url.append("&threads=");
         url.append(maxThreads);
-        Exchangers.bind(url.toString(), new ExchangeHandlerAdapter() {
 
-            public Object reply(ExchangeChannel channel, Object message) throws RemotingException {
+        Exchangers.bind(url.toString(), new ExchangeHandlerAdapter()
+        {
+            public Object reply(ExchangeChannel channel, Object message) throws RemotingException
+            {
                 return new ResponseObject(responseSize); // 发送响应
             }
         });
