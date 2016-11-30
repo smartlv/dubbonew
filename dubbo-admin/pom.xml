@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.alibaba</groupId>
         <artifactId>dubbo-parent</artifactId>
-        <version>2.5.4</version>
+        <version>2.5.5</version>
     </parent>
     <artifactId>dubbo-admin</artifactId>
     <packaging>war</packaging>
@@ -15,6 +15,8 @@
         <wtpContextName>/</wtpContextName>
         <eclipse.useProjectReferences>false</eclipse.useProjectReferences>
         <skip_maven_deploy>false</skip_maven_deploy>
+        <maven-jetty-plugin_version>8.1.15.v20140411</maven-jetty-plugin_version>
+        <spring.bom.version>3.2.7.RELEASE</spring.bom.version>
     </properties>
     <dependencies>
         <dependency>
@@ -31,16 +33,8 @@
             <artifactId>javassist</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.jboss.netty</groupId>
+            <groupId>io.netty</groupId>
             <artifactId>netty</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.mina</groupId>
-            <artifactId>mina-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.glassfish.grizzly</groupId>
-            <artifactId>grizzly-core</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
@@ -71,12 +65,8 @@
             <artifactId>curator-framework</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.googlecode.xmemcached</groupId>
-            <artifactId>xmemcached</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.thrift</groupId>
-            <artifactId>libthrift</artifactId>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
         </dependency>
         <dependency>
             <groupId>com.caucho</groupId>
@@ -100,10 +90,6 @@
             <artifactId>slf4j-log4j12</artifactId>
         </dependency>
         <dependency>
-            <groupId>redis.clients</groupId>
-            <artifactId>jedis</artifactId>
-        </dependency>
-        <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
         </dependency>
@@ -120,19 +106,19 @@
         <plugins>
             <plugin>
                 <groupId>org.mortbay.jetty</groupId>
-                <artifactId>maven-jetty-plugin</artifactId>
-                <version>${jetty_version}</version>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>${maven-jetty-plugin_version}</version>
                 <configuration>
-                    <contextPath>/</contextPath>
+                    <stopKey>exit</stopKey>
+                    <stopPort>8080</stopPort>
                     <scanIntervalSeconds>10</scanIntervalSeconds>
-                    <connectors>
-                        <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
-                            <port>8080</port>
-                            <maxIdleTime>60000</maxIdleTime>
-                        </connector>
-                    </connectors>
+                    <webAppConfig>
+                        <!--<contextPath>/${project.artifactId}</contextPath>-->
+                        <contextPath>/</contextPath>
+                    </webAppConfig>
                 </configuration>
             </plugin>
         </plugins>
     </build>
 </project>
+

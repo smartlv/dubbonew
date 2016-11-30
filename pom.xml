@@ -5,7 +5,7 @@
 
     <groupId>com.alibaba</groupId>
     <artifactId>dubbo-parent</artifactId>
-    <version>2.5.4</version>
+    <version>2.5.5</version>
     <packaging>pom</packaging>
     <name>${project.artifactId}</name>
 
@@ -58,38 +58,36 @@
         <!-- Common libs -->
         <spring_version>4.3.2.RELEASE</spring_version>
         <javassist_version>3.20.0-GA</javassist_version>
-        <netty_version>3.2.5.Final</netty_version>
-        <mina_version>1.1.7</mina_version>
-        <grizzly_version>2.1.4</grizzly_version>
+        <netty_version>3.9.9.Final</netty_version>
         <httpclient_version>4.4</httpclient_version>
         <hessian_lite_version>3.2.1-fixed-2</hessian_lite_version>
-        <xstream_version>1.4.1</xstream_version>
-        <fastjson_version>1.1.39</fastjson_version>
+        <xstream_version>1.4.8</xstream_version>
+        <fastjson_version>1.2.6</fastjson_version>
         <bsf_version>3.1</bsf_version>
         <sorcerer_version>0.8</sorcerer_version>
-        <zookeeper_version>3.3.6</zookeeper_version>
-        <zkclient_version>0.3</zkclient_version>
+        <zookeeper_version>3.4.6</zookeeper_version>
+        <zkclient_version>0.10</zkclient_version>
         <curator_version>3.1.0</curator_version>
-        <jedis_version>2.1.0</jedis_version>
-        <xmemcached_version>1.3.6</xmemcached_version>
-        <cxf_version>2.6.1</cxf_version>
-        <thrift_version>0.8.0</thrift_version>
+        <cxf_version>3.1.5</cxf_version>
         <jfreechart_version>1.0.13</jfreechart_version>
         <hessian_version>4.0.38</hessian_version>
         <servlet_version>3.0.1</servlet_version>
         <jetty_version>6.1.26</jetty_version>
-        <validation_version>1.0.0.GA</validation_version>
-        <hibernate_validator_version>4.2.0.Final</hibernate_validator_version>
+        <validation_version>1.1.0.Final</validation_version>
+        <hibernate_validator_version>5.2.4.Final</hibernate_validator_version>
         <jcache_version>0.4</jcache_version>
         <sca_version>2.0-M5.1</sca_version>
         <guice_version>3.0</guice_version>
         <cglib_version>2.2</cglib_version>
         <webx_version>3.2.4</webx_version>
+        <commons-lang_version>2.6</commons-lang_version>
         <!-- Log libs -->
-        <slf4j_version>1.7.7</slf4j_version>
+        <slf4j_version>1.7.15</slf4j_version>
         <jcl_version>1.1</jcl_version>
         <log4j_version>1.2.17</log4j_version>
-        <logback_version>1.1.2</logback_version>
+        <logback_version>1.1.5</logback_version>
+        <log4j2_version>2.6.1</log4j2_version>
+
         <!-- Test libs -->
         <junit_version>4.12</junit_version>
         <easymock_version>3.0</easymock_version>
@@ -110,8 +108,15 @@
         <java_source_version>1.8</java_source_version>
         <java_target_version>1.8</java_target_version>
         <file_encoding>UTF-8</file_encoding>
+        <maven_source_plugin_version>2.1.1</maven_source_plugin_version>
+        <maven_jar_plugin_version>2.3.2</maven_jar_plugin_version>
+        <maven_war_plugin_version>2.1.1</maven_war_plugin_version>
+        <maven_install_plugin_version>2.3.1</maven_install_plugin_version>
+        <maven_deploy_plugin_version>2.7</maven_deploy_plugin_version>
 
+        <maven-surefire-plugin_version>2.17</maven-surefire-plugin_version>
     </properties>
+
     <dependencyManagement>
         <dependencies>
             <!-- Common libs -->
@@ -128,19 +133,9 @@
                 <version>${javassist_version}</version>
             </dependency>
             <dependency>
-                <groupId>org.jboss.netty</groupId>
+                <groupId>io.netty</groupId>
                 <artifactId>netty</artifactId>
                 <version>${netty_version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.mina</groupId>
-                <artifactId>mina-core</artifactId>
-                <version>${mina_version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.glassfish.grizzly</groupId>
-                <artifactId>grizzly-core</artifactId>
-                <version>${grizzly_version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.httpcomponents</groupId>
@@ -188,16 +183,6 @@
                 <version>${curator_version}</version>
             </dependency>
             <dependency>
-                <groupId>redis.clients</groupId>
-                <artifactId>jedis</artifactId>
-                <version>${jedis_version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.googlecode.xmemcached</groupId>
-                <artifactId>xmemcached</artifactId>
-                <version>${xmemcached_version}</version>
-            </dependency>
-            <dependency>
                 <groupId>org.apache.cxf</groupId>
                 <artifactId>cxf-rt-frontend-simple</artifactId>
                 <version>${cxf_version}</version>
@@ -207,11 +192,7 @@
                 <artifactId>cxf-rt-transports-http</artifactId>
                 <version>${cxf_version}</version>
             </dependency>
-            <dependency>
-                <groupId>org.apache.thrift</groupId>
-                <artifactId>libthrift</artifactId>
-                <version>${thrift_version}</version>
-            </dependency>
+
             <dependency>
                 <groupId>jfree</groupId>
                 <artifactId>jfreechart</artifactId>
@@ -288,6 +269,16 @@
                 <artifactId>logback-classic</artifactId>
                 <version>${logback_version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-core</artifactId>
+                <version>${log4j2_version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-slf4j-impl</artifactId>
+                <version>${log4j2_version}</version>
+            </dependency>
             <!-- Test libs -->
             <dependency>
                 <groupId>junit</groupId>
@@ -317,6 +308,11 @@
                 <groupId>cglib</groupId>
                 <artifactId>cglib-nodep</artifactId>
                 <version>${cglib_version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-lang</groupId>
+                <artifactId>commons-lang</artifactId>
+                <version>${commons-lang_version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -359,74 +355,17 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.19.1</version>
-                <configuration>
-                    <useSystemClassLoader>true</useSystemClassLoader>
-                    <forkMode>once</forkMode>
-                    <argLine>${argline}</argLine>
-                    <systemProperties>
-                        <!-- common shared -->
-                        <property>
-                            <name>transporter</name>
-                            <value>${transporter}</value>
-                        </property>
-                        <property>
-                            <name>serialization</name>
-                            <value>${serialization}</value>
-                        </property>
-                        <!-- server side -->
-                        <property>
-                            <name>port</name>
-                            <value>${port}</value>
-                        </property>
-                        <property>
-                            <name>threadpool</name>
-                            <value>${threadpool}</value>
-                        </property>
-                        <property>
-                            <name>threads</name>
-                            <value>${threads}</value>
-                        </property>
-                        <property>
-                            <name>iothreads</name>
-                            <value>${iothreads}</value>
-                        </property>
-                        <!-- client side -->
-                        <property>
-                            <name>server</name>
-                            <value>${server}</value>
-                        </property>
-                        <property>
-                            <name>timeout</name>
-                            <value>${timeout}</value>
-                        </property>
-                        <property>
-                            <name>length</name>
-                            <value>${length}</value>
-                        </property>
-                        <property>
-                            <name>connections</name>
-                            <value>${connections}</value>
-                        </property>
-                        <property>
-                            <name>base</name>
-                            <value>${base}</value>
-                        </property>
-                        <property>
-                            <name>concurrent</name>
-                            <value>${concurrent}</value>
-                        </property>
-                        <property>
-                            <name>runs</name>
-                            <value>${runs}</value>
-                        </property>
-                        <property>
-                            <name>onerror</name>
-                            <value>${onerror}</value>
-                        </property>
-                    </systemProperties>
-                </configuration>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.0.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -437,6 +376,77 @@
                 </configuration>
             </plugin>
         </plugins>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>${maven_jar_plugin_version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <version>${maven_war_plugin_version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>${maven_install_plugin_version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>${maven_deploy_plugin_version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven_compiler_plugin_version}</version>
+                    <configuration>
+                        <fork>true</fork>
+                        <source>${java_source_version}</source>
+                        <target>${java_target_version}</target>
+                        <encoding>${file_encoding}</encoding>
+                        <!--<compilerArgs>-->
+                        <!--<arg>-XX:MaxPermSize=512M</arg>-->
+                        <!--</compilerArgs>-->
+                    </configuration>
+                </plugin>
+                <!--This plugin's configuration is used to store Eclipse m2e settings
+                    only. It has no influence on the Maven build itself. -->
+                <plugin>
+                    <groupId>org.eclipse.m2e</groupId>
+                    <artifactId>lifecycle-mapping</artifactId>
+                    <version>1.0.0</version>
+                    <configuration>
+                        <lifecycleMappingMetadata>
+                            <pluginExecutions>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>
+                                            org.apache.maven.plugins
+                                        </groupId>
+                                        <artifactId>
+                                            maven-dependency-plugin
+                                        </artifactId>
+                                        <versionRange>
+                                            [2.1,)
+                                        </versionRange>
+                                        <goals>
+                                            <goal>unpack</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore></ignore>
+                                    </action>
+                                </pluginExecution>
+                            </pluginExecutions>
+                        </lifecycleMappingMetadata>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 
     <distributionManagement>
