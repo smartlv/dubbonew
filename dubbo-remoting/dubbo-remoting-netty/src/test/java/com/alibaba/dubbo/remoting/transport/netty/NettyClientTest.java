@@ -15,65 +15,65 @@
  */
 package com.alibaba.dubbo.remoting.transport.netty;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
 import com.alibaba.dubbo.common.URL;
 import com.alibaba.dubbo.remoting.RemotingException;
 import com.alibaba.dubbo.remoting.Server;
 import com.alibaba.dubbo.remoting.exchange.ExchangeChannel;
 import com.alibaba.dubbo.remoting.exchange.Exchangers;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * User: heyman
- * Date: 5/3/11
- * Time: 5:47 PM
+ * User: heyman Date: 5/3/11 Time: 5:47 PM
  */
-public class NettyClientTest {
+public class NettyClientTest
+{
     static Server server;
 
-
     @BeforeClass
-    public static void setUp() throws Exception {
+    public static void setUp() throws Exception
+    {
         server = Exchangers.bind(URL.valueOf("exchange://localhost:10001?server=netty"), new TelnetServerHandler());
     }
 
     @Test
-    public void testClientClose() throws Exception {
+    public void testClientClose() throws Exception
+    {
         List<ExchangeChannel> clients = new ArrayList<ExchangeChannel>(100);
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 100; i++)
+        {
             ExchangeChannel client = Exchangers.connect(URL.valueOf("exchange://localhost:10001?client=netty"));
             Thread.sleep(5);
             clients.add(client);
         }
-        for (ExchangeChannel client : clients){
+        for (ExchangeChannel client : clients)
+        {
             client.close();
         }
         Thread.sleep(1000);
     }
 
-    @Test
-    public void testServerClose() throws Exception {
-        for (int i = 0; i < 100; i++) {
-            Server aServer = Exchangers.bind(URL.valueOf("exchange://localhost:" + (5000 + i) + "?client=netty"), new TelnetServerHandler());
-            aServer.close();
+    @AfterClass
+    public static void tearDown() throws Exception
+    {
+        try
+        {
+            if (server != null)
+                server.close();
+        }
+        finally
+        {
         }
     }
 
-    @AfterClass
-    public static void tearDown() throws Exception {
-        try {
-            if (server != null)
-                server.close();
-        } finally {}
+    public static void main(String[] args) throws RemotingException, InterruptedException
+    {
+        ExchangeChannel client = Exchangers
+                .connect(URL.valueOf("exchange://10.20.153.10:20880?client=netty&heartbeat=1000"));
+        Thread.sleep(60 * 1000 * 50);
     }
-    
-    public static void main(String[] args) throws RemotingException, InterruptedException {
-    	ExchangeChannel client = Exchangers.connect(URL.valueOf("exchange://10.20.153.10:20880?client=netty&heartbeat=1000"));
-    	Thread.sleep(60*1000*50);
-	}
 }
