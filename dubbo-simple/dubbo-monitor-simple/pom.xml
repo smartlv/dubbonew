@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.alibaba</groupId>
         <artifactId>dubbo-simple</artifactId>
-        <version>2.5.5</version>
+        <version>8.8.8</version>
     </parent>
     <artifactId>dubbo-monitor-simple</artifactId>
     <packaging>jar</packaging>

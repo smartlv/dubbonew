@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.alibaba</groupId>
         <artifactId>dubbo-parent</artifactId>
-        <version>2.5.5</version>
+        <version>8.8.8</version>
     </parent>
     <artifactId>dubbo-test</artifactId>
     <packaging>pom</packaging>
