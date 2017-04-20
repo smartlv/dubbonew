@@ -21,9 +21,9 @@
         <module>dubbo-monitor</module>
         <module>dubbo-config</module>
         <module>dubbo</module>
-        <!--<module>dubbo-simple</module>-->
-        <!--<module>dubbo-admin</module>-->
-        <!--<module>dubbo-demo</module>-->
+        <module>dubbo-simple</module>
+        <module>dubbo-admin</module>
+        <module>dubbo-demo</module>
     </modules>
 
     <profiles>
