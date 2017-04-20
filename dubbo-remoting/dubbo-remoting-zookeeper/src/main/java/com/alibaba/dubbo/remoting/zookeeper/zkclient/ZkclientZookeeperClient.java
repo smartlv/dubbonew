@@ -79,6 +79,12 @@ public class ZkclientZookeeperClient extends AbstractZookeeperClient<IZkChildLis
         }
     }
 
+    @Override
+    public boolean exists(String path)
+    {
+        return client.exists(path);
+    }
+
     public void delete(String path)
     {
         try

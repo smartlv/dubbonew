@@ -1,29 +1,31 @@
 package com.alibaba.dubbo.remoting.zookeeper;
 
-import java.util.List;
-
 import com.alibaba.dubbo.common.URL;
 
-public interface ZookeeperClient {
+import java.util.List;
 
-	void create(String path, boolean ephemeral);
+public interface ZookeeperClient
+{
+    boolean exists(String path);
 
-	void delete(String path);
+    void create(String path, boolean ephemeral);
 
-	List<String> getChildren(String path);
+    void delete(String path);
 
-	List<String> addChildListener(String path, ChildListener listener);
+    List<String> getChildren(String path);
 
-	void removeChildListener(String path, ChildListener listener);
+    List<String> addChildListener(String path, ChildListener listener);
 
-	void addStateListener(StateListener listener);
-	
-	void removeStateListener(StateListener listener);
+    void removeChildListener(String path, ChildListener listener);
 
-	boolean isConnected();
+    void addStateListener(StateListener listener);
 
-	void close();
+    void removeStateListener(StateListener listener);
 
-	URL getUrl();
+    boolean isConnected();
+
+    void close();
+
+    URL getUrl();
 
 }
