@@ -1,12 +1,12 @@
 /*
  * Copyright 1999-2011 Alibaba Group.
- *  
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
 
 /**
  * CountUtils
- * 
+ *
  * @author william.liangf
  */
 public class CountUtils
@@ -49,12 +49,12 @@ public class CountUtils
 
     public static long max(File file)
     {
-        return calc(file, MAX);
+        return calc(file, SUM);
     }
 
     public static long avg(File file)
     {
-        return calc(file, AVG);
+        return calc(file, SUM);
     }
 
     private static long calc(File file, int op)
@@ -81,7 +81,7 @@ public class CountUtils
                                 times++;
                                 if (op == MAX)
                                 {
-                                    count += Math.max(count, value);
+                                    count = Math.max(count, value);
                                 }
                                 else
                                 {
