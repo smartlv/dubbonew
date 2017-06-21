@@ -133,41 +133,25 @@ public class ServiceBean<T> extends ServiceConfig<T> implements InitializingBean
                 Map<String, ProtocolConfig> protocolConfigMap = applicationContext == null ? null
                         : BeanFactoryUtils.beansOfTypeIncludingAncestors(applicationContext, ProtocolConfig.class,
                                 false, false);
-                if ((protocolConfigMap == null || protocolConfigMap.size() == 0) && providerConfigMap.size() > 1)
-                { // 兼容旧版本
-                    List<ProviderConfig> providerConfigs = new ArrayList<ProviderConfig>();
-                    for (ProviderConfig config : providerConfigMap.values())
-                    {
-                        if (config.isDefault() != null && config.isDefault().booleanValue())
-                        {
-                            providerConfigs.add(config);
-                        }
-                    }
-                    if (providerConfigs.size() > 0)
-                    {
-                        setProviders(providerConfigs);
-                    }
-                }
-                else
+
+                ProviderConfig providerConfig = null;
+                for (ProviderConfig config : providerConfigMap.values())
                 {
-                    ProviderConfig providerConfig = null;
-                    for (ProviderConfig config : providerConfigMap.values())
+                    if (config.isDefault() == null || config.isDefault().booleanValue())
                     {
-                        if (config.isDefault() == null || config.isDefault().booleanValue())
+                        if (providerConfig != null)
                         {
-                            if (providerConfig != null)
-                            {
-                                throw new IllegalStateException(
-                                        "Duplicate provider configs: " + providerConfig + " and " + config);
-                            }
-                            providerConfig = config;
+                            throw new IllegalStateException(
+                                    "Duplicate provider configs: " + providerConfig + " and " + config);
                         }
-                    }
-                    if (providerConfig != null)
-                    {
-                        setProvider(providerConfig);
+                        providerConfig = config;
                     }
                 }
+                if (providerConfig != null)
+                {
+                    setProvider(providerConfig);
+                }
+
             }
         }
         if (getApplication() == null && (getProvider() == null || getProvider().getApplication() == null))
