@@ -20,7 +20,6 @@ import com.alibaba.dubbo.common.URL;
 import com.alibaba.dubbo.common.utils.NetUtils;
 import com.alibaba.dubbo.common.utils.StringUtils;
 import com.alibaba.dubbo.config.*;
-import com.alibaba.dubbo.config.spring.annotation.consumer.AnnotationAction;
 import com.alibaba.dubbo.config.spring.api.DemoService;
 import com.alibaba.dubbo.config.spring.api.HelloService;
 import com.alibaba.dubbo.config.spring.impl.DemoServiceImpl;
@@ -28,8 +27,6 @@ import com.alibaba.dubbo.config.spring.impl.HelloServiceImpl;
 import com.alibaba.dubbo.config.spring.registry.MockRegistry;
 import com.alibaba.dubbo.config.spring.registry.MockRegistryFactory;
 import com.alibaba.dubbo.registry.Registry;
-import com.alibaba.dubbo.registry.RegistryService;
-import com.alibaba.dubbo.rpc.Exporter;
 import com.alibaba.dubbo.rpc.RpcContext;
 import com.alibaba.dubbo.rpc.RpcException;
 import com.alibaba.dubbo.rpc.service.GenericException;
@@ -45,7 +42,7 @@ import static org.junit.Assert.*;
 import static org.junit.matchers.JUnitMatchers.containsString;
 
 /**
- * ConfigTest
+ * ConfigTest 建议注册中心去掉了，只能zk注册，所以原来多注册中心，延迟暴露，延迟初始化的方法删掉了
  * 
  * @author william.liangf
  */
@@ -116,93 +113,6 @@ public class ConfigTest
         {
             ctx.stop();
             ctx.close();
-        }
-    }
-
-    @Test
-    public void testMultiRegistry()
-    {
-        SimpleRegistryService registryService1 = new SimpleRegistryService();
-        Exporter<RegistryService> exporter1 = SimpleRegistryExporter.export(4545, registryService1);
-        SimpleRegistryService registryService2 = new SimpleRegistryService();
-        Exporter<RegistryService> exporter2 = SimpleRegistryExporter.export(4546, registryService2);
-        ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext(
-                ConfigTest.class.getPackage().getName().replace('.', '/') + "/multi-registry.xml");
-        ctx.start();
-        try
-        {
-            List<URL> urls1 = registryService1.getRegistered().get("com.alibaba.dubbo.config.spring.api.DemoService");
-            assertNull(urls1);
-            List<URL> urls2 = registryService2.getRegistered().get("com.alibaba.dubbo.config.spring.api.DemoService");
-            assertNotNull(urls2);
-            assertEquals(1, urls2.size());
-            assertEquals(
-                    "dubbo://" + NetUtils.getLocalHost() + ":20880/com.alibaba.dubbo.config.spring.api.DemoService",
-                    urls2.get(0).toIdentityString());
-        }
-        finally
-        {
-            ctx.stop();
-            ctx.close();
-            exporter1.unexport();
-            exporter2.unexport();
-        }
-    }
-
-    @Test
-    public void testDelayFixedTime() throws Exception
-    {
-        SimpleRegistryService registryService = new SimpleRegistryService();
-        Exporter<RegistryService> exporter = SimpleRegistryExporter.export(4548, registryService);
-        ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext(
-                ConfigTest.class.getPackage().getName().replace('.', '/') + "/delay-fixed-time.xml");
-        ctx.start();
-        try
-        {
-            List<URL> urls = registryService.getRegistered().get("com.alibaba.dubbo.config.spring.api.DemoService");
-            assertNull(urls);
-            int i = 0;
-            while ((i++) < 60 && urls == null)
-            {
-                urls = registryService.getRegistered().get("com.alibaba.dubbo.config.spring.api.DemoService");
-                Thread.sleep(10);
-            }
-            assertNotNull(urls);
-            assertEquals(1, urls.size());
-            assertEquals(
-                    "dubbo://" + NetUtils.getLocalHost() + ":20883/com.alibaba.dubbo.config.spring.api.DemoService",
-                    urls.get(0).toIdentityString());
-        }
-        finally
-        {
-            ctx.stop();
-            ctx.close();
-            exporter.unexport();
-        }
-    }
-
-    @Test
-    public void testDelayOnInitialized() throws Exception
-    {
-        SimpleRegistryService registryService = new SimpleRegistryService();
-        Exporter<RegistryService> exporter = SimpleRegistryExporter.export(4548, registryService);
-        ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext(
-                ConfigTest.class.getPackage().getName().replace('.', '/') + "/delay-on-initialized.xml");
-        // ctx.start();
-        try
-        {
-            List<URL> urls = registryService.getRegistered().get("com.alibaba.dubbo.config.spring.api.DemoService");
-            assertNotNull(urls);
-            assertEquals(1, urls.size());
-            assertEquals(
-                    "dubbo://" + NetUtils.getLocalHost() + ":20883/com.alibaba.dubbo.config.spring.api.DemoService",
-                    urls.get(0).toIdentityString());
-        }
-        finally
-        {
-            ctx.stop();
-            ctx.close();
-            exporter.unexport();
         }
     }
 
@@ -556,45 +466,6 @@ public class ConfigTest
         catch (IllegalStateException e)
         {
             assertTrue(e.getMessage().contains(""));
-        }
-    }
-
-    @Test
-    public void testAnnotation()
-    {
-        SimpleRegistryService registryService = new SimpleRegistryService();
-        Exporter<RegistryService> exporter = SimpleRegistryExporter.export(4548, registryService);
-        try
-        {
-            ClassPathXmlApplicationContext providerContext = new ClassPathXmlApplicationContext(
-                    ConfigTest.class.getPackage().getName().replace('.', '/') + "/annotation-provider.xml");
-            providerContext.start();
-            try
-            {
-                ClassPathXmlApplicationContext consumerContext = new ClassPathXmlApplicationContext(
-                        ConfigTest.class.getPackage().getName().replace('.', '/') + "/annotation-consumer.xml");
-                consumerContext.start();
-                try
-                {
-                    AnnotationAction annotationAction = (AnnotationAction) consumerContext.getBean("annotationAction");
-                    String hello = annotationAction.doSayName("hello");
-                    assertEquals("annotation:hello", hello);
-                }
-                finally
-                {
-                    consumerContext.stop();
-                    consumerContext.close();
-                }
-            }
-            finally
-            {
-                providerContext.stop();
-                providerContext.close();
-            }
-        }
-        finally
-        {
-            exporter.unexport();
         }
     }
 
