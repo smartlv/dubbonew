@@ -449,18 +449,18 @@
         </pluginManagement>
     </build>
 
-    <distributionManagement>
+   <distributionManagement>
         <repository>
             <id>releases-bs</id>
             <uniqueVersion>true</uniqueVersion>
-            <name>bluestone Release Repository</name>
-            <url>http://120.25.210.150:8081/nexus/content/repositories/releases/</url>
+            <name>mimeng Release Repository</name>
+            <url>http://192.168.1.200:6001/nexus/content/repositories/releases/</url>
         </repository>
         <snapshotRepository>
             <id>snapshots-bs</id>
             <uniqueVersion>true</uniqueVersion>
-            <name>bluestone Snapshot Repository</name>
-            <url>http://120.25.210.150:8081/nexus/content/repositories/snapshots/</url>
+            <name>mimeng Snapshot Repository</name>
+            <url>http://192.168.1.200:6001/nexus/content/repositories/snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 </project>
