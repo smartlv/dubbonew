@@ -52,8 +52,9 @@ public class ConfigTest
     @Test
     public void testProviderNestedService()
     {
-        ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext(
-                ConfigTest.class.getPackage().getName().replace('.', '/') + "/provider-nested-service.xml");
+        ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext(ConfigTest.class.getPackage().getName()
+                .replace('.', '/')
+                + "/provider-nested-service.xml");
         ctx.start();
         try
         {
@@ -100,8 +101,9 @@ public class ConfigTest
     @Test
     public void testMultiProtocol()
     {
-        ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext(
-                ConfigTest.class.getPackage().getName().replace('.', '/') + "/multi-protocol.xml");
+        ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext(ConfigTest.class.getPackage().getName()
+                .replace('.', '/')
+                + "/multi-protocol.xml");
         ctx.start();
         try
         {
@@ -145,8 +147,8 @@ public class ConfigTest
             reference.setApplication(new ApplicationConfig("consumer"));
             reference.setRegistry(new RegistryConfig(RegistryConfig.NO_AVAILABLE));
             reference.setInterface(DemoService.class);
-            reference.setUrl(
-                    "dubbo://" + NetUtils.getLocalHost() + ":20880?" + DemoService.class.getName() + "?check=false");
+            reference.setUrl("dubbo://" + NetUtils.getLocalHost() + ":20880?" + DemoService.class.getName()
+                    + "?check=false");
             try
             {
                 reference.get();
@@ -169,13 +171,15 @@ public class ConfigTest
     @Test
     public void testInitReference() throws Exception
     {
-        ClassPathXmlApplicationContext providerContext = new ClassPathXmlApplicationContext(
-                ConfigTest.class.getPackage().getName().replace('.', '/') + "/demo-provider.xml");
+        ClassPathXmlApplicationContext providerContext = new ClassPathXmlApplicationContext(ConfigTest.class
+                .getPackage().getName().replace('.', '/')
+                + "/demo-provider.xml");
         providerContext.start();
         try
         {
-            ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext(
-                    ConfigTest.class.getPackage().getName().replace('.', '/') + "/init-reference.xml");
+            ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext(ConfigTest.class.getPackage()
+                    .getName().replace('.', '/')
+                    + "/init-reference.xml");
             ctx.start();
             try
             {
@@ -199,8 +203,9 @@ public class ConfigTest
     @Test
     public void test_noMethodInterface_methodsKeyHasValue() throws Exception
     {
-        ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext(
-                ConfigTest.class.getPackage().getName().replace('.', '/') + "/demo-provider-no-methods-interface.xml");
+        ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext(ConfigTest.class.getPackage().getName()
+                .replace('.', '/')
+                + "/demo-provider-no-methods-interface.xml");
         ctx.start();
         try
         {
@@ -221,14 +226,16 @@ public class ConfigTest
     @Test
     public void test_RpcContext_getUrls() throws Exception
     {
-        ClassPathXmlApplicationContext providerContext = new ClassPathXmlApplicationContext(
-                ConfigTest.class.getPackage().getName().replace('.', '/') + "/demo-provider-long-waiting.xml");
+        ClassPathXmlApplicationContext providerContext = new ClassPathXmlApplicationContext(ConfigTest.class
+                .getPackage().getName().replace('.', '/')
+                + "/demo-provider-long-waiting.xml");
         providerContext.start();
 
         try
         {
-            ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext(
-                    ConfigTest.class.getPackage().getName().replace('.', '/') + "/init-reference-getUrls.xml");
+            ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext(ConfigTest.class.getPackage()
+                    .getName().replace('.', '/')
+                    + "/init-reference-getUrls.xml");
             ctx.start();
             try
             {
@@ -262,14 +269,16 @@ public class ConfigTest
     @Test
     public void test_retrySettingFail() throws Exception
     {
-        ClassPathXmlApplicationContext providerContext = new ClassPathXmlApplicationContext(
-                ConfigTest.class.getPackage().getName().replace('.', '/') + "/demo-provider-long-waiting.xml");
+        ClassPathXmlApplicationContext providerContext = new ClassPathXmlApplicationContext(ConfigTest.class
+                .getPackage().getName().replace('.', '/')
+                + "/demo-provider-long-waiting.xml");
         providerContext.start();
 
         try
         {
-            ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext(
-                    ConfigTest.class.getPackage().getName().replace('.', '/') + "/init-reference-retry-false.xml");
+            ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext(ConfigTest.class.getPackage()
+                    .getName().replace('.', '/')
+                    + "/init-reference-retry-false.xml");
             ctx.start();
             try
             {
@@ -302,8 +311,9 @@ public class ConfigTest
     @Test
     public void testXmlOverrideProperties() throws Exception
     {
-        ClassPathXmlApplicationContext providerContext = new ClassPathXmlApplicationContext(
-                ConfigTest.class.getPackage().getName().replace('.', '/') + "/xml-override-properties.xml");
+        ClassPathXmlApplicationContext providerContext = new ClassPathXmlApplicationContext(ConfigTest.class
+                .getPackage().getName().replace('.', '/')
+                + "/xml-override-properties.xml");
         providerContext.start();
         try
         {
@@ -384,8 +394,9 @@ public class ConfigTest
         System.setProperty("dubbo.protocol.name", "dubbo");
         System.setProperty("dubbo.protocol.port", "20819");
         System.setProperty("dubbo.service.register", "false");
-        ClassPathXmlApplicationContext providerContext = new ClassPathXmlApplicationContext(
-                ConfigTest.class.getPackage().getName().replace('.', '/') + "/system-properties-override.xml");
+        ClassPathXmlApplicationContext providerContext = new ClassPathXmlApplicationContext(ConfigTest.class
+                .getPackage().getName().replace('.', '/')
+                + "/system-properties-override.xml");
         providerContext.start();
         try
         {
@@ -414,38 +425,11 @@ public class ConfigTest
     }
 
     @Test
-    public void testSystemPropertyOverrideReferenceConfig() throws Exception
-    {
-        System.setProperty("dubbo.reference.retries", "5");
-
-        try
-        {
-            ServiceConfig<DemoService> service = new ServiceConfig<DemoService>();
-            service.setInterface(DemoService.class);
-            service.setRef(new DemoServiceImpl());
-            service.setRegistry(new RegistryConfig(RegistryConfig.NO_AVAILABLE));
-            ProtocolConfig protocolConfig = new ProtocolConfig("injvm");
-            service.setProtocol(protocolConfig);
-            service.export();
-
-            ReferenceConfig<DemoService> reference = new ReferenceConfig<DemoService>();
-            reference.setInterface(DemoService.class);
-            reference.setInjvm(true);
-            reference.setRetries(2);
-            reference.get();
-            assertEquals(Integer.valueOf(5), reference.getRetries());
-        }
-        finally
-        {
-            System.setProperty("dubbo.reference.retries", "");
-        }
-    }
-
-    @Test
     public void testCustomizeParameter() throws Exception
     {
-        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
-                ConfigTest.class.getPackage().getName().replace('.', '/') + "/customize-parameter.xml");
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(ConfigTest.class.getPackage()
+                .getName().replace('.', '/')
+                + "/customize-parameter.xml");
         context.start();
         ServiceBean<DemoService> serviceBean = (ServiceBean<DemoService>) context.getBean("demoServiceExport");
         URL url = (URL) serviceBean.toUrls().get(0);
@@ -544,8 +528,8 @@ public class ConfigTest
             demoService.export();
             helloService.export();
 
-            Assert.assertEquals(demoService.getExportedUrls().get(0).getPort(),
-                    helloService.getExportedUrls().get(0).getPort());
+            Assert.assertEquals(demoService.getExportedUrls().get(0).getPort(), helloService.getExportedUrls().get(0)
+                    .getPort());
         }
         finally
         {
@@ -630,8 +614,9 @@ public class ConfigTest
     @Test
     public void testGenericServiceConfigThroughSpring() throws Exception
     {
-        ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext(
-                ConfigTest.class.getPackage().getName().replace('.', '/') + "/generic-export.xml");
+        ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext(ConfigTest.class.getPackage().getName()
+                .replace('.', '/')
+                + "/generic-export.xml");
         try
         {
             ctx.start();

@@ -132,19 +132,15 @@ public class ServiceConfig<T> extends AbstractServiceConfig
         }
         if (delay != null && delay > 0)
         {
-            Thread thread = new Thread(new Runnable()
-            {
-                public void run()
+            Thread thread = new Thread(() -> {
+                try
                 {
-                    try
-                    {
-                        Thread.sleep(delay);
-                    }
-                    catch (Throwable e)
-                    {
-                    }
-                    doExport();
+                    Thread.sleep(delay);
                 }
+                catch (Throwable e)
+                {
+                }
+                doExport();
             });
             thread.setDaemon(true);
             thread.setName("DelayExportServiceThread");
@@ -302,8 +298,8 @@ public class ServiceConfig<T> extends AbstractServiceConfig
         }
         if (!interfaceClass.isInstance(ref))
         {
-            throw new IllegalStateException(
-                    "The class " + ref.getClass().getName() + " unimplemented interface " + interfaceClass + "!");
+            throw new IllegalStateException("The class " + ref.getClass().getName() + " unimplemented interface "
+                    + interfaceClass + "!");
         }
     }
 
@@ -381,8 +377,7 @@ public class ServiceConfig<T> extends AbstractServiceConfig
                             Socket socket = new Socket();
                             try
                             {
-                                SocketAddress addr = new InetSocketAddress(registryURL.getHost(),
-                                        registryURL.getPort());
+                                SocketAddress addr = new InetSocketAddress(registryURL.getHost(), registryURL.getPort());
                                 socket.connect(addr, 1000);
                                 host = socket.getLocalAddress().getHostAddress();
                                 break;
@@ -581,8 +576,8 @@ public class ServiceConfig<T> extends AbstractServiceConfig
         {
             contextPath = provider.getContextpath();
         }
-        URL url = new URL(name, host, port,
-                (contextPath == null || contextPath.length() == 0 ? "" : contextPath + "/") + path, map);
+        URL url = new URL(name, host, port, (contextPath == null || contextPath.length() == 0 ? "" : contextPath + "/")
+                + path, map);
 
         if (ExtensionLoader.getExtensionLoader(ConfiguratorFactory.class).hasExtension(url.getProtocol()))
         {
@@ -698,8 +693,8 @@ public class ServiceConfig<T> extends AbstractServiceConfig
         {
             if (interfaceName != null && interfaceName.length() > 0)
             {
-                this.interfaceClass = Class.forName(interfaceName, true,
-                        Thread.currentThread().getContextClassLoader());
+                this.interfaceClass = Class
+                        .forName(interfaceName, true, Thread.currentThread().getContextClassLoader());
             }
         }
         catch (ClassNotFoundException t)
