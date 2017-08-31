@@ -15,12 +15,6 @@
  */
 package com.alibaba.dubbo.registry.support;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.locks.ReentrantLock;
-
 import com.alibaba.dubbo.common.Constants;
 import com.alibaba.dubbo.common.URL;
 import com.alibaba.dubbo.common.logger.Logger;
@@ -29,13 +23,20 @@ import com.alibaba.dubbo.registry.Registry;
 import com.alibaba.dubbo.registry.RegistryFactory;
 import com.alibaba.dubbo.registry.RegistryService;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.ReentrantLock;
+
 /**
  * AbstractRegistryFactory. (SPI, Singleton, ThreadSafe)
- * 
- * @see com.alibaba.dubbo.registry.RegistryFactory
+ *
  * @author william.liangf
+ * @see RegistryFactory
  */
-public abstract class AbstractRegistryFactory implements RegistryFactory {
+public abstract class AbstractRegistryFactory implements RegistryFactory
+{
 
     // 日志输出
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractRegistryFactory.class);
@@ -48,56 +49,73 @@ public abstract class AbstractRegistryFactory implements RegistryFactory {
 
     /**
      * 获取所有注册中心
-     * 
+     *
      * @return 所有注册中心
      */
-    public static Collection<Registry> getRegistries() {
+    public static Collection<Registry> getRegistries()
+    {
         return Collections.unmodifiableCollection(REGISTRIES.values());
     }
 
     /**
      * 关闭所有已创建注册中心
      */
-    public static void destroyAll() {
-        if (LOGGER.isInfoEnabled()) {
+    // TODO: 2017/8/30 to move somewhere else better
+    public static void destroyAll()
+    {
+        if (LOGGER.isInfoEnabled())
+        {
             LOGGER.info("Close all registries " + getRegistries());
         }
         // 锁定注册中心关闭过程
         LOCK.lock();
-        try {
-            for (Registry registry : getRegistries()) {
-                try {
+        try
+        {
+            for (Registry registry : getRegistries())
+            {
+                try
+                {
                     registry.destroy();
-                } catch (Throwable e) {
+                }
+                catch (Throwable e)
+                {
                     LOGGER.error(e.getMessage(), e);
                 }
             }
             REGISTRIES.clear();
-        } finally {
+        }
+        finally
+        {
             // 释放锁
             LOCK.unlock();
         }
     }
 
-    public Registry getRegistry(URL url) {
-    	url = url.setPath(RegistryService.class.getName())
-    			.addParameter(Constants.INTERFACE_KEY, RegistryService.class.getName())
-    			.removeParameters(Constants.EXPORT_KEY, Constants.REFER_KEY);
-    	String key = url.toServiceString();
+    public Registry getRegistry(URL url)
+    {
+        url = url.setPath(RegistryService.class.getName())
+                .addParameter(Constants.INTERFACE_KEY, RegistryService.class.getName())
+                .removeParameters(Constants.EXPORT_KEY, Constants.REFER_KEY);
+        String key = url.toServiceString();
         // 锁定注册中心获取过程，保证注册中心单一实例
         LOCK.lock();
-        try {
+        try
+        {
             Registry registry = REGISTRIES.get(key);
-            if (registry != null) {
+            if (registry != null)
+            {
                 return registry;
             }
             registry = createRegistry(url);
-            if (registry == null) {
+            if (registry == null)
+            {
                 throw new IllegalStateException("Can not create registry " + url);
             }
             REGISTRIES.put(key, registry);
             return registry;
-        } finally {
+        }
+        finally
+        {
             // 释放锁
             LOCK.unlock();
         }
