@@ -6,7 +6,6 @@ import java.util.List;
 
 public interface ZookeeperClient
 {
-    boolean exists(String path);
 
     void create(String path, boolean ephemeral);
 
@@ -28,4 +27,5 @@ public interface ZookeeperClient
 
     URL getUrl();
 
+    boolean exists(String nodePath);
 }

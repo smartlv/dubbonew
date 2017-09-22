@@ -5,7 +5,7 @@
 
     <groupId>com.alibaba</groupId>
     <artifactId>dubbo-parent</artifactId>
-    <version>2.5.6</version>
+    <version>2.5.7</version>
     <packaging>pom</packaging>
     <name>${project.artifactId}</name>
 
@@ -23,7 +23,6 @@
         <module>dubbo</module>
         <module>dubbo-simple</module>
         <module>dubbo-admin</module>
-        <module>dubbo-demo</module>
     </modules>
 
     <profiles>
@@ -56,16 +55,16 @@
 
     <properties>
         <!-- Common libs -->
-        <spring_version>4.3.2.RELEASE</spring_version>
+        <spring_version>4.3.11.RELEASE</spring_version>
         <javassist_version>3.20.0-GA</javassist_version>
         <netty_version>3.9.9.Final</netty_version>
-        <httpclient_version>4.4</httpclient_version>
+        <httpclient_version>4.5.3</httpclient_version>
         <hessian_lite_version>3.2.1-fixed-2</hessian_lite_version>
         <xstream_version>1.4.8</xstream_version>
-        <fastjson_version>1.2.6</fastjson_version>
+        <fastjson_version>1.2.31</fastjson_version>
         <bsf_version>3.1</bsf_version>
         <sorcerer_version>0.8</sorcerer_version>
-        <zookeeper_version>3.4.6</zookeeper_version>
+        <zookeeper_version>3.4.9</zookeeper_version>
         <zkclient_version>0.10</zkclient_version>
         <curator_version>3.1.0</curator_version>
         <cxf_version>3.1.5</cxf_version>
@@ -74,24 +73,25 @@
         <servlet_version>3.0.1</servlet_version>
         <jetty_version>6.1.26</jetty_version>
         <validation_version>1.1.0.Final</validation_version>
-        <hibernate_validator_version>5.2.4.Final</hibernate_validator_version>
-        <jcache_version>0.4</jcache_version>
+        <hibernate_validator_version>5.4.1.Final</hibernate_validator_version>
+        <jel_version>3.0.1-b08</jel_version>
+        <jcache_version>1.0.0</jcache_version>
         <sca_version>2.0-M5.1</sca_version>
         <guice_version>3.0</guice_version>
         <cglib_version>2.2</cglib_version>
-        <webx_version>3.2.4</webx_version>
+        <webx_version>3.0.8</webx_version>
         <commons-lang_version>2.6</commons-lang_version>
         <!-- Log libs -->
-        <slf4j_version>1.7.15</slf4j_version>
-        <jcl_version>1.1</jcl_version>
+        <slf4j_version>1.7.25</slf4j_version>
+        <jcl_version>1.2</jcl_version>
         <log4j_version>1.2.17</log4j_version>
-        <logback_version>1.1.5</logback_version>
+        <logback_version>1.2.2</logback_version>
         <log4j2_version>2.6.1</log4j2_version>
 
         <!-- Test libs -->
         <junit_version>4.12</junit_version>
-        <easymock_version>3.0</easymock_version>
-        <jmockit_version>1.29</jmockit_version>
+        <easymock_version>3.4</easymock_version>
+        <jmockit_version>1.33</jmockit_version>
         <!-- Build args -->
         <argline>-server -Xms64m -Xmx256m -XX:PermSize=64m -XX:MaxPermSize=128m -Dfile.encoding=UTF-8
             -Djava.net.preferIPv4Stack=true
@@ -224,6 +224,11 @@
                 <version>${hibernate_validator_version}</version>
             </dependency>
             <dependency>
+                <groupId>org.glassfish</groupId>
+                <artifactId>javax.el</artifactId>
+                <version>${jel_version}</version>
+            </dependency>
+            <dependency>
                 <groupId>javax.cache</groupId>
                 <artifactId>cache-api</artifactId>
                 <version>${jcache_version}</version>
@@ -256,7 +261,7 @@
             </dependency>
             <dependency>
                 <groupId>commons-logging</groupId>
-                <artifactId>commons-logging-api</artifactId>
+                <artifactId>commons-logging</artifactId>
                 <version>${jcl_version}</version>
             </dependency>
             <dependency>
@@ -299,12 +304,6 @@
                 <scope>test</scope>
             </dependency>
             <dependency>
-                <groupId>org.easymock</groupId>
-                <artifactId>easymockclassextension</artifactId>
-                <version>${easymock_version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
                 <groupId>cglib</groupId>
                 <artifactId>cglib-nodep</artifactId>
                 <version>${cglib_version}</version>
@@ -325,10 +324,6 @@
         <dependency>
             <groupId>org.easymock</groupId>
             <artifactId>easymock</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.easymock</groupId>
-            <artifactId>easymockclassextension</artifactId>
         </dependency>
         <dependency>
             <groupId>org.jmockit</groupId>
@@ -367,6 +362,7 @@
                     </execution>
                 </executions>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
@@ -410,38 +406,7 @@
                         <encoding>${file_encoding}</encoding>
                     </configuration>
                 </plugin>
-                <!--This plugin's configuration is used to store Eclipse m2e settings
-                    only. It has no influence on the Maven build itself. -->
-                <plugin>
-                    <groupId>org.eclipse.m2e</groupId>
-                    <artifactId>lifecycle-mapping</artifactId>
-                    <version>1.0.0</version>
-                    <configuration>
-                        <lifecycleMappingMetadata>
-                            <pluginExecutions>
-                                <pluginExecution>
-                                    <pluginExecutionFilter>
-                                        <groupId>
-                                            org.apache.maven.plugins
-                                        </groupId>
-                                        <artifactId>
-                                            maven-dependency-plugin
-                                        </artifactId>
-                                        <versionRange>
-                                            [2.1,)
-                                        </versionRange>
-                                        <goals>
-                                            <goal>unpack</goal>
-                                        </goals>
-                                    </pluginExecutionFilter>
-                                    <action>
-                                        <ignore></ignore>
-                                    </action>
-                                </pluginExecution>
-                            </pluginExecutions>
-                        </lifecycleMappingMetadata>
-                    </configuration>
-                </plugin>
+
             </plugins>
         </pluginManagement>
     </build>

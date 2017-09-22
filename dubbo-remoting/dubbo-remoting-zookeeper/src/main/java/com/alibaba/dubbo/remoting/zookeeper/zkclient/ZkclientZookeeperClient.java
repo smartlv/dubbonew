@@ -24,9 +24,9 @@ public class ZkclientZookeeperClient extends AbstractZookeeperClient<IZkChildLis
     public ZkclientZookeeperClient(URL url)
     {
         super(url);
-        client = new ZkClient(url.getBackupAddress(),
-                url.getParameter(Constants.SESSION_TIMEOUT_KEY, Constants.DEFAULT_SESSION_TIMEOUT),
-                url.getParameter(Constants.TIMEOUT_KEY, Constants.DEFAULT_REGISTRY_CONNECT_TIMEOUT));
+        client = new ZkClient(url.getBackupAddress(), url.getParameter(Constants.SESSION_TIMEOUT_KEY,
+                Constants.DEFAULT_SESSION_TIMEOUT), url.getParameter(Constants.TIMEOUT_KEY,
+                Constants.DEFAULT_REGISTRY_CONNECT_TIMEOUT));
         client.subscribeStateChanges(new IZkStateListener()
         {
             public void handleStateChanged(KeeperState state) throws Exception

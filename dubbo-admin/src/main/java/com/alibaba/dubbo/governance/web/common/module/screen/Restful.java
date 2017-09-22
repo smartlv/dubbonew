@@ -12,9 +12,10 @@ import com.alibaba.dubbo.governance.biz.common.i18n.MessageResourceService;
 import com.alibaba.dubbo.governance.web.common.pulltool.RootContextPath;
 import com.alibaba.dubbo.governance.web.util.WebConstants;
 import com.alibaba.dubbo.registry.common.domain.User;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -29,23 +30,49 @@ import java.util.regex.Pattern;
  */
 public abstract class Restful {
 
-    protected static final Logger logger = LoggerFactory.getLogger(Restful.class);
+    protected static final Logger logger = Logger.getLogger(Restful.class);
 
     protected static final Pattern SPACE_SPLIT_PATTERN = Pattern.compile("\\s+");
-
-    @Autowired
-    private MessageResourceService messageResourceService;
-
-    public String getMessage(String key, Object... args) {
-        return messageResourceService.getMessage(key, args);
-    }
-
     //FIXME 把这些辅助方法提取出去
     protected String role = null;
     protected String operator = null;
     protected User currentUser = null;
     protected String operatorAddress = null;
     protected String currentRegistry = null;
+    @Autowired
+    private MessageResourceService messageResourceService;
+
+    private static boolean isPrimitive(Class<?> cls) {
+        return cls.isPrimitive() || cls == Boolean.class || cls == Byte.class
+                || cls == Character.class || cls == Short.class || cls == Integer.class
+                || cls == Long.class || cls == Float.class || cls == Double.class
+                || cls == String.class;
+    }
+
+    private static Object convertPrimitive(Class<?> cls, String value) {
+        if (cls == boolean.class || cls == Boolean.class) {
+            return value == null || value.length() == 0 ? false : Boolean.valueOf(value);
+        } else if (cls == byte.class || cls == Byte.class) {
+            return value == null || value.length() == 0 ? 0 : Byte.valueOf(value);
+        } else if (cls == char.class || cls == Character.class) {
+            return value == null || value.length() == 0 ? '\0' : value.charAt(0);
+        } else if (cls == short.class || cls == Short.class) {
+            return value == null || value.length() == 0 ? 0 : Short.valueOf(value);
+        } else if (cls == int.class || cls == Integer.class) {
+            return value == null || value.length() == 0 ? 0 : Integer.valueOf(value);
+        } else if (cls == long.class || cls == Long.class) {
+            return value == null || value.length() == 0 ? 0 : Long.valueOf(value);
+        } else if (cls == float.class || cls == Float.class) {
+            return value == null || value.length() == 0 ? 0 : Float.valueOf(value);
+        } else if (cls == double.class || cls == Double.class) {
+            return value == null || value.length() == 0 ? 0 : Double.valueOf(value);
+        }
+        return value;
+    }
+
+    public String getMessage(String key, Object... args) {
+        return messageResourceService.getMessage(key, args);
+    }
 
     public void execute(Map<String, Object> context) throws Throwable {
         if (context.get(WebConstants.CURRENT_USER_KEY) != null) {
@@ -197,34 +224,6 @@ public abstract class Restful {
 //            context.put("exception", e);
 //            context.put("redirect", getDefaultRedirect(context, method));
         }
-    }
-
-    private static boolean isPrimitive(Class<?> cls) {
-        return cls.isPrimitive() || cls == Boolean.class || cls == Byte.class
-                || cls == Character.class || cls == Short.class || cls == Integer.class
-                || cls == Long.class || cls == Float.class || cls == Double.class
-                || cls == String.class;
-    }
-
-    private static Object convertPrimitive(Class<?> cls, String value) {
-        if (cls == boolean.class || cls == Boolean.class) {
-            return value == null || value.length() == 0 ? false : Boolean.valueOf(value);
-        } else if (cls == byte.class || cls == Byte.class) {
-            return value == null || value.length() == 0 ? 0 : Byte.valueOf(value);
-        } else if (cls == char.class || cls == Character.class) {
-            return value == null || value.length() == 0 ? '\0' : value.charAt(0);
-        } else if (cls == short.class || cls == Short.class) {
-            return value == null || value.length() == 0 ? 0 : Short.valueOf(value);
-        } else if (cls == int.class || cls == Integer.class) {
-            return value == null || value.length() == 0 ? 0 : Integer.valueOf(value);
-        } else if (cls == long.class || cls == Long.class) {
-            return value == null || value.length() == 0 ? 0 : Long.valueOf(value);
-        } else if (cls == float.class || cls == Float.class) {
-            return value == null || value.length() == 0 ? 0 : Float.valueOf(value);
-        } else if (cls == double.class || cls == Double.class) {
-            return value == null || value.length() == 0 ? 0 : Double.valueOf(value);
-        }
-        return value;
     }
 
     private String getDefaultRedirect(Map<String, Object> context, String operate) {

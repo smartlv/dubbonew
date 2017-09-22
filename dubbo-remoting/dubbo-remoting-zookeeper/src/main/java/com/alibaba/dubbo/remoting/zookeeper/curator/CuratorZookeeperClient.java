@@ -1,13 +1,11 @@
 package com.alibaba.dubbo.remoting.zookeeper.curator;
 
-import com.alibaba.dubbo.common.Constants;
 import com.alibaba.dubbo.common.URL;
 import com.alibaba.dubbo.remoting.zookeeper.ChildListener;
 import com.alibaba.dubbo.remoting.zookeeper.StateListener;
 import com.alibaba.dubbo.remoting.zookeeper.support.AbstractZookeeperClient;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
-import org.apache.curator.framework.CuratorFrameworkFactory.Builder;
 import org.apache.curator.framework.api.CuratorWatcher;
 import org.apache.curator.framework.state.ConnectionState;
 import org.apache.curator.framework.state.ConnectionStateListener;
@@ -27,36 +25,41 @@ public class CuratorZookeeperClient extends AbstractZookeeperClient<CuratorWatch
     public CuratorZookeeperClient(URL url)
     {
         super(url);
-        Builder builder = CuratorFrameworkFactory.builder().connectString(url.getBackupAddress())
-                .retryPolicy(new RetryNTimes(Integer.MAX_VALUE, 1000))
-                .connectionTimeoutMs(
-                        url.getParameter(Constants.TIMEOUT_KEY, Constants.DEFAULT_REGISTRY_CONNECT_TIMEOUT))
-                .sessionTimeoutMs(url.getParameter(Constants.SESSION_TIMEOUT_KEY, Constants.DEFAULT_SESSION_TIMEOUT));
-        String authority = url.getAuthority();
-        if (authority != null && authority.length() > 0)
+        try
         {
-            builder = builder.authorization("digest", authority.getBytes());
-        }
-        client = builder.build();
-        client.getConnectionStateListenable().addListener(new ConnectionStateListener()
-        {
-            public void stateChanged(CuratorFramework client, ConnectionState state)
+            CuratorFrameworkFactory.Builder builder = CuratorFrameworkFactory.builder()
+                    .connectString(url.getBackupAddress()).retryPolicy(new RetryNTimes(Integer.MAX_VALUE, 1000))
+                    .connectionTimeoutMs(5000);
+            String authority = url.getAuthority();
+            if (authority != null && authority.length() > 0)
             {
-                if (state == ConnectionState.LOST)
-                {
-                    CuratorZookeeperClient.this.stateChanged(StateListener.DISCONNECTED);
-                }
-                else if (state == ConnectionState.CONNECTED)
-                {
-                    CuratorZookeeperClient.this.stateChanged(StateListener.CONNECTED);
-                }
-                else if (state == ConnectionState.RECONNECTED)
-                {
-                    CuratorZookeeperClient.this.stateChanged(StateListener.RECONNECTED);
-                }
+                builder = builder.authorization("digest", authority.getBytes());
             }
-        });
-        client.start();
+            client = builder.build();
+            client.getConnectionStateListenable().addListener(new ConnectionStateListener()
+            {
+                public void stateChanged(CuratorFramework client, ConnectionState state)
+                {
+                    if (state == ConnectionState.LOST)
+                    {
+                        CuratorZookeeperClient.this.stateChanged(StateListener.DISCONNECTED);
+                    }
+                    else if (state == ConnectionState.CONNECTED)
+                    {
+                        CuratorZookeeperClient.this.stateChanged(StateListener.CONNECTED);
+                    }
+                    else if (state == ConnectionState.RECONNECTED)
+                    {
+                        CuratorZookeeperClient.this.stateChanged(StateListener.RECONNECTED);
+                    }
+                }
+            });
+            client.start();
+        }
+        catch (Exception e)
+        {
+            throw new IllegalStateException(e.getMessage(), e);
+        }
     }
 
     public void createPersistent(String path)
@@ -87,23 +90,6 @@ public class CuratorZookeeperClient extends AbstractZookeeperClient<CuratorWatch
         {
             throw new IllegalStateException(e.getMessage(), e);
         }
-    }
-
-    @Override
-    public boolean exists(String path)
-    {
-        try
-        {
-            return !(client.checkExists().forPath(path) == null);
-        }
-        catch (NoNodeException e)
-        {
-        }
-        catch (Exception e)
-        {
-            throw new IllegalStateException(e.getMessage(), e);
-        }
-        return false;
     }
 
     public void delete(String path)
@@ -142,34 +128,22 @@ public class CuratorZookeeperClient extends AbstractZookeeperClient<CuratorWatch
         return client.getZookeeperClient().isConnected();
     }
 
+    @Override
+    public boolean exists(String nodePath)
+    {
+        try
+        {
+            return client.checkExists().forPath(nodePath) != null;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+    }
+
     public void doClose()
     {
         client.close();
-    }
-
-    private class CuratorWatcherImpl implements CuratorWatcher
-    {
-
-        private volatile ChildListener listener;
-
-        public CuratorWatcherImpl(ChildListener listener)
-        {
-            this.listener = listener;
-        }
-
-        public void unwatch()
-        {
-            this.listener = null;
-        }
-
-        public void process(WatchedEvent event) throws Exception
-        {
-            if (listener != null)
-            {
-                listener.childChanged(event.getPath(),
-                        client.getChildren().usingWatcher(this).forPath(event.getPath()));
-            }
-        }
     }
 
     public CuratorWatcher createTargetChildListener(String path, ChildListener listener)
@@ -196,6 +170,30 @@ public class CuratorZookeeperClient extends AbstractZookeeperClient<CuratorWatch
     public void removeTargetChildListener(String path, CuratorWatcher listener)
     {
         ((CuratorWatcherImpl) listener).unwatch();
+    }
+
+    private class CuratorWatcherImpl implements CuratorWatcher
+    {
+
+        private volatile ChildListener listener;
+
+        public CuratorWatcherImpl(ChildListener listener)
+        {
+            this.listener = listener;
+        }
+
+        public void unwatch()
+        {
+            this.listener = null;
+        }
+
+        public void process(WatchedEvent event) throws Exception
+        {
+            if (listener != null)
+            {
+                listener.childChanged(event.getPath(), client.getChildren().usingWatcher(this).forPath(event.getPath()));
+            }
+        }
     }
 
 }
