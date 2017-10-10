@@ -1,12 +1,12 @@
 /*
  * Copyright 1999-2011 Alibaba Group.
- *
+ *  
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ *  
  *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ *  
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,8 +23,7 @@ import java.util.regex.Pattern;
  *
  * @author william.liangf
  */
-public class Constants
-{
+public class Constants {
 
     public static final String PROVIDER = "provider";
 
@@ -74,11 +73,12 @@ public class Constants
 
     public static final String $ECHO = "$echo";
 
-    public static final int DEFAULT_IO_THREADS = Runtime.getRuntime().availableProcessors() + 1;
+    public static final int DEFAULT_IO_THREADS = Runtime.getRuntime()
+            .availableProcessors() + 1;
 
     public static final String DEFAULT_PROXY = "javassist";
 
-    public static final int DEFAULT_PAYLOAD = 8 * 1024 * 1024; // 8M
+    public static final int DEFAULT_PAYLOAD = 8 * 1024 * 1024;                      // 8M
 
     public static final String DEFAULT_CLUSTER = "failover";
 
@@ -118,8 +118,6 @@ public class Constants
 
     public static final int DEFAULT_THREADS = 200;
 
-    public static final boolean DEFAULT_KEEP_ALIVE = true;
-
     public static final int DEFAULT_QUEUES = 0;
 
     public static final int DEFAULT_ALIVE = 60 * 1000;
@@ -135,8 +133,6 @@ public class Constants
     public static final int DEFAULT_TIMEOUT = 1000;
 
     public static final int DEFAULT_CONNECT_TIMEOUT = 3000;
-
-    public static final int DEFAULT_REGISTRY_CONNECT_TIMEOUT = 5000;
 
     public static final int DEFAULT_RETRIES = 2;
 
@@ -157,7 +153,7 @@ public class Constants
 
     public static final String LOADBALANCE_KEY = "loadbalance";
 
-    // key for router type, for e.g., "script"/"file", corresponding to ScriptRouterFactory.NAME, FileRouterFactory.NAME
+    // key for router type, for e.g., "script"/"file",  corresponding to ScriptRouterFactory.NAME, FileRouterFactory.NAME 
     public static final String ROUTER_KEY = "router";
 
     public static final String CLUSTER_KEY = "cluster";
@@ -264,16 +260,6 @@ public class Constants
 
     public static final String SERIALIZATION_KEY = "serialization";
 
-    // modified by lishen
-    public static final String EXTENSION_KEY = "extension";
-
-    // modified by lishen
-    public static final String KEEP_ALIVE_KEY = "keepalive";
-
-    // modified by lishen
-    // TODO change to a better name
-    public static final String OPTIMIZER_KEY = "optimizer";
-
     public static final String EXCHANGER_KEY = "exchanger";
 
     public static final String TRANSPORTER_KEY = "transporter";
@@ -310,6 +296,8 @@ public class Constants
 
     public static final String TIMESTAMP_KEY = "timestamp";
 
+    public static final String REMOTE_TIMESTAMP_KEY = "remote.timestamp";
+
     public static final String WARMUP_KEY = "warmup";
 
     public static final int DEFAULT_WARMUP = 10 * 60 * 1000;
@@ -329,6 +317,8 @@ public class Constants
     public static final String GENERIC_KEY = "generic";
 
     public static final String FILE_KEY = "file";
+
+    public static final String DUMP_DIRECTORY = "dump.directory";
 
     public static final String WAIT_KEY = "wait";
 
@@ -352,17 +342,20 @@ public class Constants
 
     public static final String COMMA_SEPARATOR = ",";
 
-    public static final Pattern COMMA_SPLIT_PATTERN = Pattern.compile("\\s*[,]+\\s*");
+    public static final Pattern COMMA_SPLIT_PATTERN = Pattern
+            .compile("\\s*[,]+\\s*");
 
     public final static String PATH_SEPARATOR = "/";
 
     public static final String REGISTRY_SEPARATOR = "|";
 
-    public static final Pattern REGISTRY_SPLIT_PATTERN = Pattern.compile("\\s*[|;]+\\s*");
+    public static final Pattern REGISTRY_SPLIT_PATTERN = Pattern
+            .compile("\\s*[|;]+\\s*");
 
     public static final String SEMICOLON_SEPARATOR = ";";
 
-    public static final Pattern SEMICOLON_SPLIT_PATTERN = Pattern.compile("\\s*[;]+\\s*");
+    public static final Pattern SEMICOLON_SPLIT_PATTERN = Pattern
+            .compile("\\s*[;]+\\s*");
 
     public static final String CONNECT_QUEUE_CAPACITY = "connect.queue.capacity";
 
@@ -551,7 +544,7 @@ public class Constants
 
     public static final String STUB_EVENT_METHODS_KEY = "dubbo.stub.event.methods";
 
-    // invocation attachment属性中如果有此值，则选择mock invoker
+    //invocation attachment属性中如果有此值，则选择mock invoker
     public static final String INVOCATION_NEED_MOCK = "invocation.need.mock";
 
     public static final String LOCAL_PROTOCOL = "injvm";
