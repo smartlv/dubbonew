@@ -24,7 +24,6 @@ import com.alibaba.dubbo.rpc.cluster.Directory;
 import com.alibaba.dubbo.rpc.cluster.LoadBalance;
 import com.alibaba.dubbo.rpc.cluster.directory.StaticDirectory;
 import com.alibaba.dubbo.rpc.cluster.filter.DemoService;
-import com.alibaba.dubbo.rpc.cluster.loadbalance.LeastActiveLoadBalance;
 import com.alibaba.dubbo.rpc.cluster.loadbalance.RandomLoadBalance;
 import com.alibaba.dubbo.rpc.cluster.loadbalance.RoundRobinLoadBalance;
 import junit.framework.Assert;
@@ -179,7 +178,6 @@ public class AbstractClusterInvokerTest
     public void testSelect_multiInvokers() throws Exception
     {
         testSelect_multiInvokers(RoundRobinLoadBalance.NAME);
-        testSelect_multiInvokers(LeastActiveLoadBalance.NAME);
         testSelect_multiInvokers(RandomLoadBalance.NAME);
     }
 

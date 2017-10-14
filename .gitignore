@@ -24,3 +24,5 @@ target/
 .DS_Store
 Thumbs.db
 
+dubbo-simple/dubbo-monitor-simple/statistics/20171014/null/null/null/192.168.1.193/provider.success
+dubbo-simple/dubbo-monitor-simple/statistics/20171014/null/null/null/192.168.1.193/provider.failure

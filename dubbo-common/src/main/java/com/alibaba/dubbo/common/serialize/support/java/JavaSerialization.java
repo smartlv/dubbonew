@@ -15,31 +15,34 @@
  */
 package com.alibaba.dubbo.common.serialize.support.java;
 
+import com.alibaba.dubbo.common.URL;
+import com.alibaba.dubbo.common.serialize.ObjectInput;
+import com.alibaba.dubbo.common.serialize.ObjectOutput;
+import com.alibaba.dubbo.common.serialize.Serialization;
+
 import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.ObjectStreamClass;
+import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
- * Compacted java object output stream.
- *
- * @author qianlei
+ * @author ding.lid
  */
+public class JavaSerialization implements Serialization {
 
-public class CompactedObjectOutputStream extends ObjectOutputStream {
-    public CompactedObjectOutputStream(OutputStream out) throws IOException {
-        super(out);
+    public byte getContentTypeId() {
+        return 3;
     }
 
-    @Override
-    protected void writeClassDescriptor(ObjectStreamClass desc) throws IOException {
-        Class<?> clazz = desc.forClass();
-        if (clazz.isPrimitive() || clazz.isArray()) {
-            write(0);
-            super.writeClassDescriptor(desc);
-        } else {
-            write(1);
-            writeUTF(desc.getName());
-        }
+    public String getContentType() {
+        return "x-application/java";
     }
+
+    public ObjectOutput serialize(URL url, OutputStream out) throws IOException {
+        return new JavaObjectOutput(out);
+    }
+
+    public ObjectInput deserialize(URL url, InputStream is) throws IOException {
+        return new JavaObjectInput(is);
+    }
+
 }

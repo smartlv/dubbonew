@@ -32,8 +32,7 @@ import java.util.concurrent.locks.ReentrantLock;
  *
  * @author william.liangf
  */
-public abstract class AbstractMonitorFactory implements MonitorFactory
-{
+public abstract class AbstractMonitorFactory implements MonitorFactory {
 
     // 注册中心获取过程锁
     private static final ReentrantLock LOCK = new ReentrantLock();
@@ -41,34 +40,26 @@ public abstract class AbstractMonitorFactory implements MonitorFactory
     // 注册中心集合 Map<RegistryAddress, Registry>
     private static final Map<String, Monitor> MONITORS = new ConcurrentHashMap<String, Monitor>();
 
-    public static Collection<Monitor> getMonitors()
-    {
+    public static Collection<Monitor> getMonitors() {
         return Collections.unmodifiableCollection(MONITORS.values());
     }
 
-    public Monitor getMonitor(URL url)
-    {
-        url = url.setPath(MonitorService.class.getName()).addParameter(Constants.INTERFACE_KEY,
-                MonitorService.class.getName());
-        String key = url.toServiceString();
+    public Monitor getMonitor(URL url) {
+        url = url.setPath(MonitorService.class.getName()).addParameter(Constants.INTERFACE_KEY, MonitorService.class.getName());
+        String key = url.toServiceStringWithoutResolving();
         LOCK.lock();
-        try
-        {
+        try {
             Monitor monitor = MONITORS.get(key);
-            if (monitor != null)
-            {
+            if (monitor != null) {
                 return monitor;
             }
             monitor = createMonitor(url);
-            if (monitor == null)
-            {
+            if (monitor == null) {
                 throw new IllegalStateException("Can not create monitor " + url);
             }
             MONITORS.put(key, monitor);
             return monitor;
-        }
-        finally
-        {
+        } finally {
             // 释放锁
             LOCK.unlock();
         }

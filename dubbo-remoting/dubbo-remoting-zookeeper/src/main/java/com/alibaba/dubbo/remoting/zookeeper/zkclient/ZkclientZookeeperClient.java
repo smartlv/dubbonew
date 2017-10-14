@@ -1,10 +1,10 @@
 package com.alibaba.dubbo.remoting.zookeeper.zkclient;
 
-import com.alibaba.dubbo.common.Constants;
 import com.alibaba.dubbo.common.URL;
 import com.alibaba.dubbo.remoting.zookeeper.ChildListener;
 import com.alibaba.dubbo.remoting.zookeeper.StateListener;
 import com.alibaba.dubbo.remoting.zookeeper.support.AbstractZookeeperClient;
+
 import org.I0Itec.zkclient.IZkChildListener;
 import org.I0Itec.zkclient.IZkStateListener;
 import org.I0Itec.zkclient.ZkClient;
@@ -24,9 +24,7 @@ public class ZkclientZookeeperClient extends AbstractZookeeperClient<IZkChildLis
     public ZkclientZookeeperClient(URL url)
     {
         super(url);
-        client = new ZkClient(url.getBackupAddress(), url.getParameter(Constants.SESSION_TIMEOUT_KEY,
-                Constants.DEFAULT_SESSION_TIMEOUT), url.getParameter(Constants.TIMEOUT_KEY,
-                Constants.DEFAULT_REGISTRY_CONNECT_TIMEOUT));
+        client = new ZkClient(url.getBackupAddress());
         client.subscribeStateChanges(new IZkStateListener()
         {
             public void handleStateChanged(KeeperState state) throws Exception

@@ -28,7 +28,6 @@ import com.alibaba.dubbo.common.URL;
  */
 public class OverrideConfiguratorTest {
 
-    @Test
     public void testOverride_Application(){
         OverrideConfigurator configurator = new OverrideConfigurator(URL.valueOf("override://foo@0.0.0.0/com.foo.BarService?timeout=200"));
         
@@ -45,7 +44,6 @@ public class OverrideConfiguratorTest {
         Assert.assertEquals("1000", url.getParameter("timeout"));
     }
 
-    @Test
     public void testOverride_Host(){
         OverrideConfigurator configurator = new OverrideConfigurator(URL.valueOf("override://10.20.153.10/com.foo.BarService?timeout=200"));
         
