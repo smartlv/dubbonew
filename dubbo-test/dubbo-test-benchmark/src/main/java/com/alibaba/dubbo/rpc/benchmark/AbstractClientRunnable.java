@@ -62,7 +62,7 @@ public abstract class AbstractClientRunnable implements ClientRunnable {
         serviceFactory.setClientNums(clientNums);
         serviceFactory.setTargetPort(targetPort);
         serviceFactory.setConnectTimeout(rpcTimeout);
-        maxRange = (Integer.parseInt(String.valueOf((endTime - startTime))) / 1000000) + 1;
+        maxRange = ((int)(Long.parseLong(String.valueOf((endTime - startTime))) / 1000000L)) + 1;
         errorTPS = new long[maxRange];
         errorResponseTimes = new long[maxRange];
         tps = new long[maxRange];

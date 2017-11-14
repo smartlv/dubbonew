@@ -4,8 +4,7 @@ import com.alibaba.dubbo.common.URL;
 
 import java.util.List;
 
-public interface ZookeeperClient
-{
+public interface ZookeeperClient {
 
     void create(String path, boolean ephemeral);
 
@@ -27,5 +26,4 @@ public interface ZookeeperClient
 
     URL getUrl();
 
-    boolean exists(String nodePath);
 }
