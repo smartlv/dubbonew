@@ -14,29 +14,41 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.alibaba.dubbo.remoting.transport.netty;
+package com.alibaba;
 
-import com.alibaba.dubbo.common.URL;
-import com.alibaba.dubbo.remoting.ChannelHandler;
-import com.alibaba.dubbo.remoting.Client;
-import com.alibaba.dubbo.remoting.RemotingException;
-import com.alibaba.dubbo.remoting.Server;
-import com.alibaba.dubbo.remoting.Transporter;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 /**
- *
- *
+ * Unit test for simple App.
  */
-public class NettyTransporter implements Transporter {
-
-    public static final String NAME = "netty";
-
-    public Server bind(URL url, ChannelHandler listener) throws RemotingException {
-        return new NettyServer(url, listener);
+public class AppTest 
+    extends TestCase
+{
+    /**
+     * Create the test case
+     *
+     * @param testName name of the test case
+     */
+    public AppTest( String testName )
+    {
+        super( testName );
     }
 
-    public Client connect(URL url, ChannelHandler listener) throws RemotingException {
-        return new NettyClient(url, listener);
+    /**
+     * @return the suite of tests being tested
+     */
+    public static Test suite()
+    {
+        return new TestSuite( AppTest.class );
     }
 
+    /**
+     * Rigourous Test :-)
+     */
+    public void testApp()
+    {
+        assertTrue( true );
+    }
 }

@@ -58,6 +58,7 @@
         <spring_version>4.3.11.RELEASE</spring_version>
         <javassist_version>3.20.0-GA</javassist_version>
         <netty_version>3.9.9.Final</netty_version>
+        <netty4_version>4.0.35.Final</netty4_version>
         <httpclient_version>4.5.3</httpclient_version>
         <hessian_lite_version>3.2.1-fixed-2</hessian_lite_version>
         <xstream_version>1.4.8</xstream_version>
@@ -137,6 +138,11 @@
                 <groupId>io.netty</groupId>
                 <artifactId>netty</artifactId>
                 <version>${netty_version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-all</artifactId>
+                <version>${netty4_version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.httpcomponents</groupId>
