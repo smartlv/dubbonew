@@ -58,7 +58,7 @@
         <!-- Common libs -->
         <spring_version>4.3.11.RELEASE</spring_version>
         <javassist_version>3.20.0-GA</javassist_version>
-        <netty_version>4.0.35.Final</netty_version>
+        <netty_version>4.1.7.Final</netty_version>
         <httpclient_version>4.5.3</httpclient_version>
         <hessian_lite_version>3.2.1-fixed-2</hessian_lite_version>
         <xstream_version>1.4.8</xstream_version>

@@ -16,16 +16,27 @@
  */
 package com.alibaba.dubbo.demo.provider;
 
+import com.alibaba.dubbo.demo.BusinessException;
 import com.alibaba.dubbo.demo.DemoService;
+import com.alibaba.dubbo.demo.ErrorCode;
+import com.alibaba.dubbo.demo.UserException;
 import com.alibaba.dubbo.rpc.RpcContext;
 
+import java.awt.image.BufferStrategy;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DemoServiceImpl implements DemoService {
 
-    public String sayHello(String name) {
+    public String sayHello(String name) throws BusinessException {
         System.out.println("[" + new SimpleDateFormat("HH:mm:ss").format(new Date()) + "] Hello " + name + ", request from consumer: " + RpcContext.getContext().getRemoteAddress());
+
+        if(name.isEmpty())
+        {
+            throw new UserException(new ErrorCode(1, "错误 jvm is shit"));
+
+        }
+
         return "Hello " + name + ", response form provider: " + RpcContext.getContext().getLocalAddress();
     }
 

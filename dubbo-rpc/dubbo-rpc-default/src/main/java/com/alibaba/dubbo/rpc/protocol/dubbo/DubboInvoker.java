@@ -108,7 +108,6 @@ public class DubboInvoker<T> extends AbstractInvoker<T> {
         if (!super.isAvailable())
             return false;
         for (ExchangeClient client : clients) {
-            System.out.println("ddddd"+client.isConnected());
             if (client.isConnected() && !client.hasAttribute(Constants.CHANNEL_ATTRIBUTE_READONLY_KEY)) {
                 //cannot write == not Available ?
                 return true;
