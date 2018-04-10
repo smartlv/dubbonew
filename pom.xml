@@ -5,7 +5,7 @@
 
     <groupId>com.alibaba</groupId>
     <artifactId>dubbo-parent</artifactId>
-   <version>2.6.2</version>
+    <version>2.7.0</version>
     <packaging>pom</packaging>
     <name>${project.artifactId}</name>
 
@@ -67,7 +67,7 @@
         <sorcerer_version>0.8</sorcerer_version>
         <zookeeper_version>3.4.9</zookeeper_version>
         <zkclient_version>0.10</zkclient_version>
-        <curator_version>3.1.0</curator_version>
+        <curator_version>2.12.0</curator_version>
         <cxf_version>3.1.5</cxf_version>
         <jfreechart_version>1.0.13</jfreechart_version>
         <hessian_version>4.0.38</hessian_version>
@@ -320,6 +320,13 @@
                 <artifactId>commons-lang</artifactId>
                 <version>${commons-lang_version}</version>
             </dependency>
+            <!--hystrix -->
+            <dependency>
+                <groupId>com.netflix.hystrix</groupId>
+                <artifactId>hystrix-core</artifactId>
+                <version>1.5.12</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
