@@ -32,7 +32,7 @@ public class Consumer {
         while (true) {
             try {
                 Thread.sleep(1000);
-                String hello = demoService.sayHello(""); // call remote method
+                String hello = demoService.sayHello("cddd"); // call remote method
                 System.out.println(hello); // get result
 
             } catch (Throwable throwable) {
