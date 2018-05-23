@@ -5,7 +5,7 @@
 
     <groupId>com.alibaba</groupId>
     <artifactId>dubbo-parent</artifactId>
-    <version>2.7.0</version>
+    <version>2.7.1</version>
     <packaging>pom</packaging>
     <name>${project.artifactId}</name>
 
@@ -15,7 +15,6 @@
         <module>dubbo-container</module>
         <module>dubbo-remoting</module>
         <module>dubbo-rpc</module>
-        <module>dubbo-filter</module>
         <module>dubbo-cluster</module>
         <module>dubbo-registry</module>
         <module>dubbo-monitor</module>
@@ -320,13 +319,6 @@
                 <artifactId>commons-lang</artifactId>
                 <version>${commons-lang_version}</version>
             </dependency>
-            <!--hystrix -->
-            <dependency>
-                <groupId>com.netflix.hystrix</groupId>
-                <artifactId>hystrix-core</artifactId>
-                <version>1.5.12</version>
-            </dependency>
-
         </dependencies>
     </dependencyManagement>
 

@@ -1,12 +1,12 @@
 /*
  * Copyright 1999-2011 Alibaba Group.
- *  
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,11 +19,7 @@ import com.alibaba.dubbo.common.Constants;
 import com.alibaba.dubbo.common.URL;
 import com.alibaba.dubbo.common.Version;
 import com.alibaba.dubbo.common.extension.ExtensionLoader;
-import com.alibaba.dubbo.common.utils.ConfigUtils;
-import com.alibaba.dubbo.common.utils.NetUtils;
-import com.alibaba.dubbo.common.utils.ReflectUtils;
-import com.alibaba.dubbo.common.utils.StringUtils;
-import com.alibaba.dubbo.common.utils.UrlUtils;
+import com.alibaba.dubbo.common.utils.*;
 import com.alibaba.dubbo.config.support.Parameter;
 import com.alibaba.dubbo.monitor.MonitorFactory;
 import com.alibaba.dubbo.monitor.MonitorService;
@@ -98,19 +94,6 @@ public abstract class AbstractInterfaceConfig extends AbstractMethodConfig {
     private String scope;
 
     protected void checkRegistry() {
-        // 兼容旧版本
-        if (registries == null || registries.size() == 0) {
-            String address = ConfigUtils.getProperty("dubbo.registry.address");
-            if (address != null && address.length() > 0) {
-                registries = new ArrayList<RegistryConfig>();
-                String[] as = address.split("\\s*[|]+\\s*");
-                for (String a : as) {
-                    RegistryConfig registryConfig = new RegistryConfig();
-                    registryConfig.setAddress(a);
-                    registries.add(registryConfig);
-                }
-            }
-        }
         if ((registries == null || registries.size() == 0)) {
             throw new IllegalStateException((getClass().getSimpleName().startsWith("Reference")
                     ? "No such any registry to refer service in consumer "
@@ -120,20 +103,11 @@ public abstract class AbstractInterfaceConfig extends AbstractMethodConfig {
                     + Version.getVersion()
                     + ", Please add <dubbo:registry address=\"...\" /> to your spring config. If you want unregister, please set <dubbo:service registry=\"N/A\" />");
         }
-        for (RegistryConfig registryConfig : registries) {
-            appendProperties(registryConfig);
-        }
     }
 
     @SuppressWarnings("deprecation")
     protected void checkApplication() {
-        // 兼容旧版本
-        if (application == null) {
-            String applicationName = ConfigUtils.getProperty("dubbo.application.name");
-            if (applicationName != null && applicationName.length() > 0) {
-                application = new ApplicationConfig();
-            }
-        }
+
         if (application == null) {
             throw new IllegalStateException(
                     "No such application config! Please add <dubbo:application name=\"...\" /> to your spring config.");
@@ -482,7 +456,7 @@ public abstract class AbstractInterfaceConfig extends AbstractMethodConfig {
         return callbacks;
     }
 
-    public void setCallbacks(Integer callbacks) {
+    public void setCallbacks(Integer caL1llbacks) {
         this.callbacks = callbacks;
     }
 

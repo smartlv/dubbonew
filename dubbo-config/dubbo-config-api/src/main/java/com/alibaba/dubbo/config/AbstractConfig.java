@@ -1,12 +1,12 @@
 /*
  * Copyright 1999-2011 Alibaba Group.
- *  
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -29,7 +29,6 @@ import com.alibaba.dubbo.config.support.Parameter;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -59,43 +58,20 @@ public abstract class AbstractConfig implements Serializable {
     private static final Pattern PATTERN_NAME_HAS_SYMBOL = Pattern.compile("[:*,/\\-._0-9a-zA-Z]+");
 
     private static final Pattern PATTERN_KEY = Pattern.compile("[*,\\-._0-9a-zA-Z]+");
-    private static final Map<String, String> legacyProperties = new HashMap<String, String>();
     private static final String[] SUFFIXS = new String[]{"Config", "Bean"};
 
-    static {
-        legacyProperties.put("dubbo.protocol.name", "dubbo.service.protocol");
-        legacyProperties.put("dubbo.protocol.host", "dubbo.service.server.host");
-        legacyProperties.put("dubbo.protocol.port", "dubbo.service.server.port");
-        legacyProperties.put("dubbo.protocol.threads", "dubbo.service.max.thread.pool.size");
-        legacyProperties.put("dubbo.consumer.timeout", "dubbo.service.invoke.timeout");
-        legacyProperties.put("dubbo.consumer.retries", "dubbo.service.max.retry.providers");
-        legacyProperties.put("dubbo.consumer.check", "dubbo.service.allow.no.provider");
-        legacyProperties.put("dubbo.service.url", "dubbo.service.address");
-    }
 
     static {
-        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
-            public void run() {
-                if (logger.isInfoEnabled()) {
-                    logger.info("Run shutdown hook now.");
-                }
-                ProtocolConfig.destroyAll();
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            if (logger.isInfoEnabled()) {
+                logger.info("Run shutdown hook now.");
             }
+            ProtocolConfig.destroyAll();
         }, "DubboShutdownHook"));
     }
 
     protected String id;
 
-    private static String convertLegacyValue(String key, String value) {
-        if (value != null && value.length() > 0) {
-            if ("dubbo.service.max.retry.providers".equals(key)) {
-                return String.valueOf(Integer.parseInt(value) - 1);
-            } else if ("dubbo.service.allow.no.provider".equals(key)) {
-                return String.valueOf(!Boolean.parseBoolean(value));
-            }
-        }
-        return value;
-    }
 
     protected static void appendProperties(AbstractConfig config) {
         if (config == null) {
@@ -144,12 +120,7 @@ public abstract class AbstractConfig implements Serializable {
                                 if (value == null || value.length() == 0) {
                                     value = ConfigUtils.getProperty(prefix + property);
                                 }
-                                if (value == null || value.length() == 0) {
-                                    String legacyKey = legacyProperties.get(prefix + property);
-                                    if (legacyKey != null && legacyKey.length() > 0) {
-                                        value = convertLegacyValue(legacyKey, ConfigUtils.getProperty(legacyKey));
-                                    }
-                                }
+
 
                             }
                         }

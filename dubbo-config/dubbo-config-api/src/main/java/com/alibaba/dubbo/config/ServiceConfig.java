@@ -35,27 +35,13 @@ import com.alibaba.dubbo.rpc.service.GenericService;
 import com.alibaba.dubbo.rpc.support.ProtocolUtils;
 
 import java.lang.reflect.Method;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.net.SocketAddress;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.net.*;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import static com.alibaba.dubbo.common.utils.NetUtils.LOCALHOST;
-import static com.alibaba.dubbo.common.utils.NetUtils.getAvailablePort;
-import static com.alibaba.dubbo.common.utils.NetUtils.getLocalHost;
-import static com.alibaba.dubbo.common.utils.NetUtils.isInvalidLocalHost;
-import static com.alibaba.dubbo.common.utils.NetUtils.isInvalidPort;
+import static com.alibaba.dubbo.common.utils.NetUtils.*;
 
 /**
  * ServiceConfig
@@ -223,7 +209,6 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
         if (interfaceName == null || interfaceName.length() == 0) {
             throw new IllegalStateException("<dubbo:service interface=\"\" /> interface not allow null!");
         }
-        checkDefault();
         if (provider != null) {
             if (application == null) {
                 application = provider.getApplication();
@@ -672,27 +657,17 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
         return port;
     }
 
-    private void checkDefault() {
-        if (provider == null) {
-            provider = new ProviderConfig();
-        }
-        appendProperties(provider);
-    }
 
     private void checkProtocol() {
         if ((protocols == null || protocols.size() == 0)
                 && provider != null) {
             setProtocols(provider.getProtocols());
         }
-        // 兼容旧版本
-        if (protocols == null || protocols.size() == 0) {
-            setProtocol(new ProtocolConfig());
-        }
+
         for (ProtocolConfig protocolConfig : protocols) {
             if (StringUtils.isEmpty(protocolConfig.getName())) {
                 protocolConfig.setName("dubbo");
             }
-            appendProperties(protocolConfig);
         }
     }
 

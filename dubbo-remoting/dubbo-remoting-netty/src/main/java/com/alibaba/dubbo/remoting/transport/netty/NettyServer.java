@@ -29,7 +29,6 @@ import com.alibaba.dubbo.remoting.Server;
 import com.alibaba.dubbo.remoting.transport.AbstractServer;
 import com.alibaba.dubbo.remoting.transport.dispatcher.ChannelHandlers;
 import com.alibaba.dubbo.remoting.transport.netty.logging.NettyHelper;
-
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.ChannelFuture;
@@ -69,10 +68,11 @@ public class NettyServer extends AbstractServer implements Server {
     @Override
     protected void doOpen() throws Throwable {
         NettyHelper.setNettyLoggerFactory();
-
+//netty4
         bootstrap = new ServerBootstrap();
-
+//1个监听连接
         bossGroup = new NioEventLoopGroup(1, new DefaultThreadFactory("NettyServerBoss", true));
+//       cpu*2 读写
         workerGroup = new NioEventLoopGroup(getUrl().getPositiveParameter(Constants.IO_THREADS_KEY, Constants.DEFAULT_IO_THREADS),
                 new DefaultThreadFactory("NettyServerWorker", true));
 
@@ -83,7 +83,9 @@ public class NettyServer extends AbstractServer implements Server {
                 .channel(NioServerSocketChannel.class)
                 .childOption(ChannelOption.TCP_NODELAY, Boolean.TRUE)
                 .childOption(ChannelOption.SO_REUSEADDR, Boolean.TRUE)
+//                池化连接
                 .childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
+                .childOption(ChannelOption.SO_KEEPALIVE, Boolean.TRUE)
                 .childHandler(new ChannelInitializer<NioSocketChannel>() {
                     @Override
                     protected void initChannel(NioSocketChannel ch) throws Exception {
