@@ -16,8 +16,12 @@
  */
 package com.alibaba.dubbo.demo;
 
-public interface DemoService {
+import java.util.Map;
+
+public interface DemoService
+{
 
     String sayHello(String name) throws BusinessException;
 
+    Map sayHello2(String name) throws BusinessException;
 }

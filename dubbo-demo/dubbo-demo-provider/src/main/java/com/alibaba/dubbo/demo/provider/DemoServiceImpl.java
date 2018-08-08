@@ -21,23 +21,33 @@ import com.alibaba.dubbo.demo.DemoService;
 import com.alibaba.dubbo.demo.ErrorCode;
 import com.alibaba.dubbo.demo.UserException;
 import com.alibaba.dubbo.rpc.RpcContext;
+import com.google.common.collect.Maps;
 
-import java.awt.image.BufferStrategy;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 
-public class DemoServiceImpl implements DemoService {
+public class DemoServiceImpl implements DemoService
+{
 
-    public String sayHello(String name) throws BusinessException {
-        System.out.println("[" + new SimpleDateFormat("HH:mm:ss").format(new Date()) + "] Hello " + name + ", request from consumer: " + RpcContext.getContext().getRemoteAddress());
+    public String sayHello(String name) throws BusinessException
+    {
+        System.out.println("[" + new SimpleDateFormat("HH:mm:ss").format(new Date()) + "] Hello " + name
+                + ", request from consumer: " + RpcContext.getContext().getRemoteAddress());
 
-        if(name.isEmpty())
+        if (name.isEmpty())
         {
             throw new UserException(new ErrorCode(1, "错误 jvm is shit"));
 
         }
 
         return "Hello " + name + ", response form provider: " + RpcContext.getContext().getLocalAddress();
+    }
+
+    @Override
+    public Map sayHello2(String name) throws BusinessException
+    {
+        return Maps.newHashMap();
     }
 
 }

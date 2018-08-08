@@ -20,5 +20,10 @@
             <artifactId>dubbo-common</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.netflix.hystrix</groupId>
+            <artifactId>hystrix-core</artifactId>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 </project>

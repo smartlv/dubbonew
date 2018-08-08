@@ -1,0 +1,1 @@
+defaultFallback=com.alibaba.dubbo.rpc.filter.hystrix.DefaultFallback

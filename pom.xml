@@ -82,6 +82,7 @@
         <webx_version>3.1.6</webx_version>
         <velocity_version>1.7</velocity_version>
         <commons-lang_version>2.6</commons-lang_version>
+        <hystrix_version>1.5.12</hystrix_version>
         <!-- Log libs -->
         <slf4j_version>1.7.25</slf4j_version>
         <jcl_version>1.2</jcl_version>
@@ -319,6 +320,12 @@
                 <artifactId>commons-lang</artifactId>
                 <version>${commons-lang_version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.netflix.hystrix</groupId>
+                <artifactId>hystrix-core</artifactId>
+                <version>${hystrix_version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
